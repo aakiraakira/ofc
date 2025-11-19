@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Outfit (Modern/Clean) + Cormorant (Elegant Serif for headings) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -36,12 +36,16 @@
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-slow': 'spin 8s linear infinite',
+                        'scroll': 'scroll 25s linear infinite',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-100%)' },
                         }
                     }
                 }
@@ -50,7 +54,7 @@
     </script>
 
     <style>
-        /* Custom Animation Classes */
+        /* --- Animations --- */
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(30px);
@@ -65,223 +69,224 @@
         .stagger-1 { transition-delay: 100ms; }
         .stagger-2 { transition-delay: 200ms; }
         .stagger-3 { transition-delay: 300ms; }
-        .stagger-4 { transition-delay: 400ms; }
 
-        /* Glassmorphism Card */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.9);
+        /* --- Glassmorphism & Cards --- */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .glass-dark {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-
-        /* Image Hover Effects */
         .hover-zoom-img {
             transition: transform 0.7s ease;
         }
         .group:hover .hover-zoom-img {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
-        /* Custom Underline Animation */
-        .hover-underline-animation {
-            display: inline-block;
-            position: relative;
+        /* --- Mobile Optimization Utilities --- */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        .hover-underline-animation::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #0ea5e9;
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
-        .hover-underline-animation:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
+
+        /* Accordion Styles */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 200px; /* Approximate max height */
+            opacity: 1;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
         }
     </style>
 </head>
 <body class="font-sans text-brand-dark bg-slate-50 antialiased overflow-x-hidden selection:bg-brand-main selection:text-white">
 
     <!-- Navigation -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-white/0">
-        <div class="container mx-auto px-6">
-            <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/50 px-6 py-3 flex justify-between items-center">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-2 lg:py-4">
+        <div class="container mx-auto px-4 lg:px-6">
+            <div class="glass-nav rounded-2xl shadow-lg px-4 lg:px-6 py-3 flex justify-between items-center">
                 <!-- Logo -->
-                <a href="#" class="flex items-center gap-3">
-                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/OFC-logo_re.jpg" alt="OFC Logo" class="h-10 w-auto object-contain">
+                <a href="#" class="flex items-center gap-3 z-50">
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/OFC-logo_re.jpg" alt="OFC Logo" class="h-8 lg:h-10 w-auto object-contain">
                 </a>
 
                 <!-- Desktop Menu -->
                 <div class="hidden lg:flex items-center space-x-8 font-heading font-medium text-sm uppercase tracking-wide">
-                    <a href="#home" class="hover:text-brand-main transition-colors hover-underline-animation">Home</a>
-                    <a href="#solutions" class="hover:text-brand-main transition-colors hover-underline-animation">Our Solutions</a>
-                    <a href="#process" class="hover:text-brand-main transition-colors hover-underline-animation">How It Works</a>
-                    <a href="#why-us" class="hover:text-brand-main transition-colors hover-underline-animation">Why OFC</a>
-                    <a href="tel:+6598838858" class="bg-gradient-to-r from-brand-main to-cyan-400 text-white px-6 py-2.5 rounded-full font-bold shadow-[0_4px_14px_0_rgba(14,165,233,0.39)] hover:shadow-[0_6px_20px_rgba(14,165,233,0.23)] hover:-translate-y-0.5 transition-all transform">
+                    <a href="#home" class="hover:text-brand-main transition-colors">Home</a>
+                    <a href="#solutions" class="hover:text-brand-main transition-colors">Solutions</a>
+                    <a href="#process" class="hover:text-brand-main transition-colors">Process</a>
+                    <a href="#projects" class="hover:text-brand-main transition-colors">Projects</a>
+                    <a href="tel:+6598838858" class="bg-brand-main text-white px-6 py-2.5 rounded-full font-bold hover:bg-cyan-600 transition-all shadow-md hover:-translate-y-0.5">
                         <i class="fas fa-phone-alt mr-2"></i> +65 9883 8858
                     </a>
                 </div>
 
-                <!-- Mobile Button -->
-                <button id="mobile-menu-btn" class="lg:hidden text-2xl text-brand-dark focus:outline-none">
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden text-2xl text-brand-dark focus:outline-none z-50 p-2">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden absolute top-24 left-0 w-full px-6">
-            <div class="bg-white rounded-2xl shadow-2xl py-6 px-6 flex flex-col space-y-4 border border-gray-100">
-                <a href="#home" class="block font-bold text-brand-dark">Home</a>
-                <a href="#solutions" class="block font-bold text-brand-dark">Solutions</a>
-                <a href="#process" class="block font-bold text-brand-dark">Process</a>
-                <a href="tel:+6598838858" class="block w-full text-center bg-brand-main text-white py-3 rounded-xl font-bold">Call Now</a>
-            </div>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-white z-40 transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col justify-center items-center space-y-8 text-xl font-heading font-bold">
+            <a href="#home" class="mobile-link hover:text-brand-main">Home</a>
+            <a href="#solutions" class="mobile-link hover:text-brand-main">Our Solutions</a>
+            <a href="#process" class="mobile-link hover:text-brand-main">How It Works</a>
+            <a href="#projects" class="mobile-link hover:text-brand-main">Projects</a>
+            <a href="#contact" class="mobile-link hover:text-brand-main">Contact Us</a>
+            <a href="tel:+6598838858" class="bg-brand-main text-white px-8 py-3 rounded-full shadow-lg">
+                Call Now
+            </a>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <!-- Background Image with Modern Gradient Overlay -->
+        <!-- Background Parallax -->
         <div class="absolute inset-0 z-0">
-            <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Workstation.jpg" alt="Modern Office Background" class="w-full h-full object-cover">
-            <!-- Gradient Overlay: White fade from left, Blue tint -->
-            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-brand-main/20"></div>
+            <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Workstation.jpg" alt="Modern Office Background" class="w-full h-full object-cover object-center">
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/20 lg:to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent lg:hidden"></div>
         </div>
 
-        <!-- Floating Abstract Shapes for 'Modern' feel -->
-        <div class="absolute top-32 right-20 w-64 h-64 bg-brand-main rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
-        <div class="absolute bottom-20 right-1/3 w-96 h-96 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float" style="animation-delay: 2s;"></div>
-
         <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-3xl">
-                <div class="inline-block px-4 py-1 rounded-full bg-blue-50 border border-blue-100 text-brand-main font-bold text-sm uppercase tracking-wider mb-6 reveal-on-scroll">
-                    <i class="fas fa-star mr-2"></i> Singapore's #1 Office Furniture Supplier
+            <div class="max-w-3xl pt-10 lg:pt-0">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-brand-main font-bold text-xs md:text-sm uppercase tracking-wider mb-6 reveal-on-scroll shadow-sm">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-main"></span>
+                    </span>
+                    Singapore's Trusted Supplier
                 </div>
                 
-                <h1 class="font-heading text-5xl md:text-7xl font-bold leading-tight text-brand-dark mb-6 reveal-on-scroll stagger-1">
-                    Mix & Match <br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-main to-cyan-500">Your Perfect Office.</span>
+                <h1 class="font-heading text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-brand-dark mb-6 reveal-on-scroll stagger-1">
+                    Transform Your <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-main to-cyan-500">Workspace Today.</span>
                 </h1>
                 
-                <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl reveal-on-scroll stagger-2">
-                    Create a workspace that embodies style, functionality, and productivity. We provide high-performance, cost-effective office furniture solutions tailored to your business needs.
+                <p class="text-base md:text-lg lg:text-xl text-gray-600 mb-8 leading-relaxed max-w-xl reveal-on-scroll stagger-2">
+                    Mix & match premium office furniture tailored to your brand. Cost-effective, ergonomic, and delivered with white-glove service.
                 </p>
                 
-                <div class="flex flex-col sm:flex-row gap-4 reveal-on-scroll stagger-3">
-                    <a href="#solutions" class="group relative px-8 py-4 bg-brand-dark text-white rounded-xl overflow-hidden shadow-xl transition-all hover:-translate-y-1">
-                        <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-main to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <span class="relative font-bold flex items-center gap-2">
-                            Explore Catalog <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                        </span>
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto reveal-on-scroll stagger-3">
+                    <a href="#solutions" class="px-8 py-4 bg-brand-dark text-white rounded-xl font-bold shadow-xl hover:bg-brand-main transition-colors text-center flex justify-center items-center gap-2">
+                        View Collection <i class="fas fa-arrow-right text-sm"></i>
                     </a>
-                    
-                    <a href="#contact" class="px-8 py-4 bg-white text-brand-dark border-2 border-gray-200 rounded-xl font-bold hover:border-brand-main hover:text-brand-main transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2">
-                        Get a Quote
+                    <a href="#contact" class="px-8 py-4 bg-white text-brand-dark border border-gray-200 rounded-xl font-bold shadow-sm hover:shadow-md transition-all text-center">
+                        Get a Free Quote
                     </a>
                 </div>
             </div>
-        </div>
-
-        <!-- Scroll Down Mouse -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-brand-main animate-bounce">
-            <svg class="w-6 h-10 border-2 border-brand-dark/20 rounded-full p-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
         </div>
     </section>
 
-    <!-- Statistics Strip -->
-    <div class="bg-brand-dark py-12 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
-        <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white relative z-10">
-            <div class="reveal-on-scroll">
-                <div class="text-4xl font-heading font-bold text-brand-main mb-1 counter" data-target="10">10+</div>
-                <div class="text-sm text-gray-400 uppercase tracking-wider">Years Experience</div>
-            </div>
-            <div class="reveal-on-scroll stagger-1">
-                <div class="text-4xl font-heading font-bold text-brand-main mb-1 counter" data-target="500">500+</div>
-                <div class="text-sm text-gray-400 uppercase tracking-wider">Projects Completed</div>
-            </div>
-            <div class="reveal-on-scroll stagger-2">
-                <div class="text-4xl font-heading font-bold text-brand-main mb-1 counter" data-target="100">100%</div>
-                <div class="text-sm text-gray-400 uppercase tracking-wider">Satisfaction</div>
-            </div>
-            <div class="reveal-on-scroll stagger-3">
-                <div class="text-4xl font-heading font-bold text-brand-main mb-1">24/7</div>
-                <div class="text-sm text-gray-400 uppercase tracking-wider">Support</div>
+    <!-- Trusted By Strip (New Section) -->
+    <div class="bg-white border-y border-gray-100 py-8 overflow-hidden">
+        <div class="container mx-auto px-6 mb-4 text-center">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Trusted by businesses across Singapore</p>
+        </div>
+        <div class="relative flex overflow-x-hidden group">
+            <div class="animate-scroll whitespace-nowrap flex space-x-16 text-gray-300 text-2xl font-bold items-center px-4">
+                <span>TECHCORP</span>
+                <span>FINANCE.SG</span>
+                <span>INNOVATE LABS</span>
+                <span>STARTUP HUB</span>
+                <span>LEGAL PARTNERS</span>
+                <span>EDU CENTER</span>
+                <span>LOGISTICS PRO</span>
+                <span>TECHCORP</span> <!-- Repeat for smooth loop -->
+                <span>FINANCE.SG</span>
+                <span>INNOVATE LABS</span>
             </div>
         </div>
     </div>
 
-    <!-- Modern "Bento Grid" Products Section -->
-    <section id="solutions" class="py-24 bg-slate-50">
+    <!-- Statistics Grid (Mobile Optimized) -->
+    <div class="bg-brand-dark py-12 relative overflow-hidden">
+        <div class="container mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-4 text-center text-white relative z-10">
+            <div class="reveal-on-scroll">
+                <div class="text-3xl lg:text-4xl font-heading font-bold text-brand-main mb-1">10+</div>
+                <div class="text-xs lg:text-sm text-gray-400 uppercase tracking-wider">Years Experience</div>
+            </div>
+            <div class="reveal-on-scroll stagger-1">
+                <div class="text-3xl lg:text-4xl font-heading font-bold text-brand-main mb-1">500+</div>
+                <div class="text-xs lg:text-sm text-gray-400 uppercase tracking-wider">Happy Clients</div>
+            </div>
+            <div class="reveal-on-scroll stagger-2">
+                <div class="text-3xl lg:text-4xl font-heading font-bold text-brand-main mb-1">100%</div>
+                <div class="text-xs lg:text-sm text-gray-400 uppercase tracking-wider">Satisfaction</div>
+            </div>
+            <div class="reveal-on-scroll stagger-3">
+                <div class="text-3xl lg:text-4xl font-heading font-bold text-brand-main mb-1">24/7</div>
+                <div class="text-xs lg:text-sm text-gray-400 uppercase tracking-wider">Support</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Solutions Section (Mobile Stacked) -->
+    <section id="solutions" class="py-20 bg-slate-50">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal-on-scroll">
-                <div>
-                    <h4 class="text-brand-main font-bold tracking-widest uppercase mb-2">Our Collection</h4>
-                    <h2 class="text-4xl font-heading font-bold text-brand-dark">Office Solutions</h2>
-                </div>
-                <p class="text-gray-500 max-w-md mt-4 md:mt-0">Browse our curated selection of high-quality office furniture designed for modern businesses.</p>
+            <div class="text-center md:text-left mb-12 reveal-on-scroll">
+                <h4 class="text-brand-main font-bold tracking-widest uppercase text-sm mb-2">Our Collection</h4>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">Office Solutions</h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 h-auto md:h-[600px]">
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
                 
-                <!-- Main Feature: Workstation (Large Left Block) -->
-                <div class="group relative md:col-span-2 md:row-span-2 rounded-3xl overflow-hidden shadow-lg cursor-pointer reveal-on-scroll">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all z-10"></div>
+                <!-- Featured Item (Span 2 on Desktop) -->
+                <div class="group relative md:col-span-2 md:row-span-2 rounded-3xl overflow-hidden shadow-lg h-[400px] md:h-auto reveal-on-scroll">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent z-10"></div>
                     <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Workstation.jpg" alt="Office Workstation" class="w-full h-full object-cover hover-zoom-img">
-                    
-                    <div class="absolute bottom-0 left-0 w-full p-8 z-20 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <div class="bg-white/95 backdrop-blur p-6 rounded-xl shadow-2xl">
-                            <h3 class="text-2xl font-bold text-brand-dark mb-2">Office Workstations</h3>
-                            <p class="text-gray-600 mb-4 line-clamp-2">Designed to be cost effective, flexible and responsive to changes in work styles.</p>
-                            <span class="text-brand-main font-bold uppercase text-sm tracking-wider flex items-center gap-2">
-                                View Details <i class="fas fa-arrow-right"></i>
-                            </span>
-                        </div>
+                    <div class="absolute bottom-0 left-0 w-full p-6 z-20">
+                        <h3 class="text-2xl font-bold text-white mb-2">Office Workstations</h3>
+                        <p class="text-gray-300 mb-4 text-sm md:text-base line-clamp-2">Flexible configurations designed for evolving teams. Desks, partitions, and accessories.</p>
+                        <button class="text-white border-b border-brand-main pb-1 hover:text-brand-main transition-colors text-sm font-bold uppercase tracking-wider">View Catalog</button>
                     </div>
                 </div>
 
-                <!-- Top Right: Meeting Tables -->
-                <div class="group relative rounded-3xl overflow-hidden shadow-lg cursor-pointer reveal-on-scroll stagger-1">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Meeting-Discussion-Table.jpg" alt="Meeting Table" class="w-full h-full object-cover hover-zoom-img">
-                    <div class="absolute bottom-6 left-6 z-20">
-                        <h3 class="text-white text-xl font-bold">Meeting Tables</h3>
-                        <p class="text-gray-300 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Foster collaboration & ideas.</p>
+                <!-- Item 2 -->
+                <div class="group relative rounded-3xl overflow-hidden shadow-lg h-[250px] md:h-auto reveal-on-scroll stagger-1">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 to-transparent z-10"></div>
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Meeting-Discussion-Table.jpg" alt="Meeting Tables" class="w-full h-full object-cover hover-zoom-img">
+                    <div class="absolute bottom-4 left-6 z-20">
+                        <h3 class="text-white text-lg font-bold">Meeting Tables</h3>
+                        <p class="text-gray-300 text-xs">Collaboration hubs.</p>
                     </div>
                 </div>
 
-                <!-- Middle Right: Panel Systems -->
-                <div class="group relative rounded-3xl overflow-hidden shadow-lg cursor-pointer reveal-on-scroll stagger-2">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
-                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Panel-System-Workstation.jpg" alt="Panel System" class="w-full h-full object-cover hover-zoom-img">
-                    <div class="absolute bottom-6 left-6 z-20">
-                        <h3 class="text-white text-xl font-bold">Panel Systems</h3>
-                        <p class="text-gray-300 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Privacy meets open plan.</p>
+                <!-- Item 3 -->
+                <div class="group relative rounded-3xl overflow-hidden shadow-lg h-[250px] md:h-auto reveal-on-scroll stagger-2">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 to-transparent z-10"></div>
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Panel-System-Workstation.jpg" alt="Panel Systems" class="w-full h-full object-cover hover-zoom-img">
+                    <div class="absolute bottom-4 left-6 z-20">
+                        <h3 class="text-white text-lg font-bold">Panel Systems</h3>
+                        <p class="text-gray-300 text-xs">Privacy & focus.</p>
                     </div>
                 </div>
 
-                 <!-- Bottom Right: Cabinets -->
-                <div class="group relative rounded-3xl overflow-hidden shadow-lg cursor-pointer reveal-on-scroll stagger-2">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+                 <!-- Item 4 -->
+                <div class="group relative rounded-3xl overflow-hidden shadow-lg h-[250px] md:h-auto reveal-on-scroll stagger-2">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 to-transparent z-10"></div>
                     <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Modular-Storage-Cabinet.jpg" alt="Storage" class="w-full h-full object-cover hover-zoom-img">
-                    <div class="absolute bottom-6 left-6 z-20">
-                        <h3 class="text-white text-xl font-bold">Storage Solutions</h3>
-                        <p class="text-gray-300 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">Maximize your office space.</p>
+                    <div class="absolute bottom-4 left-6 z-20">
+                        <h3 class="text-white text-lg font-bold">Smart Storage</h3>
+                        <p class="text-gray-300 text-xs">Maximize space.</p>
                     </div>
                 </div>
 
@@ -289,68 +294,57 @@
         </div>
     </section>
 
-    <!-- Interactive Process Section -->
-    <section id="process" class="py-24 bg-brand-dark relative overflow-hidden">
-        <!-- Animated Background Lines -->
-        <svg class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
+    <!-- Process Section (Vertical Mobile, Horizontal Desktop) -->
+    <section id="process" class="py-20 bg-brand-dark relative overflow-hidden">
+        <!-- Abstract Background -->
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
 
         <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center mb-20 reveal-on-scroll">
-                <h2 class="text-4xl font-heading font-bold text-white">Your Journey to a Better Office</h2>
-                <p class="text-gray-400 mt-4">A simple 4-step process to transform your workspace.</p>
+            <div class="text-center mb-16 reveal-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-white">Simple 4-Step Process</h2>
             </div>
 
             <div class="relative">
-                <!-- Connecting Line (Desktop) -->
-                <div class="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-brand-dark via-brand-main to-brand-dark -translate-y-1/2 z-0"></div>
+                <!-- Horizontal Line (Desktop Only) -->
+                <div class="hidden lg:block absolute top-10 left-0 w-full h-1 bg-gray-700 -translate-y-1/2 z-0"></div>
+                
+                <!-- Vertical Line (Mobile Only) -->
+                <div class="lg:hidden absolute top-0 left-10 w-1 h-full bg-gray-700 z-0"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-8">
                     <!-- Step 1 -->
-                    <div class="group relative reveal-on-scroll cursor-default">
-                        <div class="w-20 h-20 mx-auto bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white mb-6 relative z-10 group-hover:bg-brand-main transition-colors duration-300 shadow-[0_0_20px_rgba(14,165,233,0.3)]">
-                            1
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-xl font-bold text-white mb-2">Layout Plan</h3>
-                            <p class="text-gray-400 text-sm group-hover:text-white transition-colors">We analyze your floor plan and draft the optimal layout.</p>
+                    <div class="relative flex lg:flex-col items-center lg:items-center gap-6 reveal-on-scroll">
+                        <div class="w-20 h-20 bg-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white z-10 shadow-[0_0_20px_rgba(14,165,233,0.5)] shrink-0">1</div>
+                        <div class="text-left lg:text-center">
+                            <h3 class="text-xl font-bold text-white mb-1">Layout Plan</h3>
+                            <p class="text-gray-400 text-sm">We analyze your floor plan and draft optimal layouts.</p>
                         </div>
                     </div>
 
                     <!-- Step 2 -->
-                    <div class="group relative reveal-on-scroll stagger-1 cursor-default">
-                        <div class="w-20 h-20 mx-auto bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white mb-6 relative z-10 group-hover:bg-brand-main transition-colors duration-300 shadow-[0_0_20px_rgba(14,165,233,0.3)]">
-                            2
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-xl font-bold text-white mb-2">Design Select</h3>
-                            <p class="text-gray-400 text-sm group-hover:text-white transition-colors">Choose workstation styles and leg structures.</p>
+                    <div class="relative flex lg:flex-col items-center lg:items-center gap-6 reveal-on-scroll stagger-1">
+                        <div class="w-20 h-20 bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white z-10 shrink-0">2</div>
+                        <div class="text-left lg:text-center">
+                            <h3 class="text-xl font-bold text-white mb-1">Design Select</h3>
+                            <p class="text-gray-400 text-sm">Choose workstation styles, colors, and materials.</p>
                         </div>
                     </div>
 
                     <!-- Step 3 -->
-                    <div class="group relative reveal-on-scroll stagger-2 cursor-default">
-                        <div class="w-20 h-20 mx-auto bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white mb-6 relative z-10 group-hover:bg-brand-main transition-colors duration-300 shadow-[0_0_20px_rgba(14,165,233,0.3)]">
-                            3
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-xl font-bold text-white mb-2">Colors & Finish</h3>
-                            <p class="text-gray-400 text-sm group-hover:text-white transition-colors">Select fabrics, tabletops, and cabinet finishes.</p>
+                    <div class="relative flex lg:flex-col items-center lg:items-center gap-6 reveal-on-scroll stagger-2">
+                        <div class="w-20 h-20 bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white z-10 shrink-0">3</div>
+                        <div class="text-left lg:text-center">
+                            <h3 class="text-xl font-bold text-white mb-1">Fabrication</h3>
+                            <p class="text-gray-400 text-sm">We manufacture your furniture with precision.</p>
                         </div>
                     </div>
 
                     <!-- Step 4 -->
-                    <div class="group relative reveal-on-scroll stagger-3 cursor-default">
-                        <div class="w-20 h-20 mx-auto bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white mb-6 relative z-10 group-hover:bg-brand-main transition-colors duration-300 shadow-[0_0_20px_rgba(14,165,233,0.3)]">
-                            4
-                        </div>
-                        <div class="text-center">
-                            <h3 class="text-xl font-bold text-white mb-2">Installation</h3>
-                            <p class="text-gray-400 text-sm group-hover:text-white transition-colors">Professional delivery and setup at your location.</p>
+                    <div class="relative flex lg:flex-col items-center lg:items-center gap-6 reveal-on-scroll stagger-3">
+                        <div class="w-20 h-20 bg-brand-dark border-2 border-brand-main rounded-full flex items-center justify-center text-2xl font-bold text-white z-10 shrink-0">4</div>
+                        <div class="text-left lg:text-center">
+                            <h3 class="text-xl font-bold text-white mb-1">Installation</h3>
+                            <p class="text-gray-400 text-sm">Professional delivery and assembly at your office.</p>
                         </div>
                     </div>
                 </div>
@@ -358,96 +352,166 @@
         </div>
     </section>
 
-    <!-- Why Choose Us (Feature Grid) -->
-    <section id="why-us" class="py-24 bg-white">
+    <!-- Project Showcase (New Horizontal Scroll Section) -->
+    <section id="projects" class="py-20 bg-white">
+        <div class="container mx-auto px-6 mb-10 flex justify-between items-end">
+            <div>
+                <h4 class="text-brand-main font-bold uppercase text-sm mb-2">Portfolio</h4>
+                <h2 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark">Recent Installations</h2>
+            </div>
+            <div class="hidden md:flex gap-2">
+                <button class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-brand-main hover:text-white transition-colors" onclick="scrollProjects('left')"><i class="fas fa-chevron-left"></i></button>
+                <button class="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-brand-main hover:text-white transition-colors" onclick="scrollProjects('right')"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Scroll Container -->
+        <div id="project-scroll" class="flex overflow-x-auto gap-6 px-6 pb-8 no-scrollbar snap-x snap-mandatory">
+            <!-- Card 1 -->
+            <div class="min-w-[85vw] md:min-w-[400px] snap-center">
+                <div class="rounded-2xl overflow-hidden shadow-lg relative group h-64 md:h-72">
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Workstation.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Project 1">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-brand-main text-xs font-bold uppercase">Tech Startup</span>
+                        <h3 class="text-white text-xl font-bold">Open Plan Layout</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="min-w-[85vw] md:min-w-[400px] snap-center">
+                <div class="rounded-2xl overflow-hidden shadow-lg relative group h-64 md:h-72">
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Meeting-Discussion-Table.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Project 2">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-brand-main text-xs font-bold uppercase">Corporate HQ</span>
+                        <h3 class="text-white text-xl font-bold">Executive Boardroom</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="min-w-[85vw] md:min-w-[400px] snap-center">
+                <div class="rounded-2xl overflow-hidden shadow-lg relative group h-64 md:h-72">
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Office-Panel-System-Workstation.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Project 3">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-brand-main text-xs font-bold uppercase">Call Center</span>
+                        <h3 class="text-white text-xl font-bold">High Density Pods</h3>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- Card 4 -->
+            <div class="min-w-[85vw] md:min-w-[400px] snap-center">
+                <div class="rounded-2xl overflow-hidden shadow-lg relative group h-64 md:h-72">
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/Modular-Storage-Cabinet.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Project 4">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-brand-main text-xs font-bold uppercase">Legal Firm</span>
+                        <h3 class="text-white text-xl font-bold">Filing Solutions</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section (New) -->
+    <section class="py-20 bg-slate-50">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-heading font-bold text-brand-dark">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden accordion-item">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+                        <span class="font-bold text-brand-dark">Do you offer site measurements?</span>
+                        <i class="fas fa-chevron-down text-brand-main accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content px-6 text-gray-600 text-sm pb-4">
+                        Yes! We provide free site assessments to ensure accurate measurements for your office layout plan.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden accordion-item">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+                        <span class="font-bold text-brand-dark">What is the warranty period?</span>
+                        <i class="fas fa-chevron-down text-brand-main accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content px-6 text-gray-600 text-sm pb-4">
+                        Most of our products come with a 1 to 5-year manufacturer warranty covering defects in materials and workmanship.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden accordion-item">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleAccordion(this)">
+                        <span class="font-bold text-brand-dark">How long does delivery take?</span>
+                        <i class="fas fa-chevron-down text-brand-main accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content px-6 text-gray-600 text-sm pb-4">
+                        Standard delivery typically takes 7-14 working days, depending on stock availability and customization requirements.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="why-us" class="py-20 bg-white border-t border-gray-100">
         <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="reveal-on-scroll">
-                    <h4 class="text-brand-main font-bold uppercase tracking-widest mb-2">Why Choose OFC</h4>
-                    <h2 class="text-4xl font-heading font-bold text-brand-dark mb-6">We Don't Just Sell Furniture. We Build Environments.</h2>
-                    <p class="text-gray-600 mb-6 text-lg">
-                        With a track record of serving numerous customers in Singapore and a commitment to quality, we are the preferred office furniture supplier for businesses like yours.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-brand-main text-xl shrink-0">
-                                <i class="fas fa-leaf"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark">Green Initiatives</h4>
-                                <p class="text-sm text-gray-500 mt-1">Sustainable, eco-friendly materials.</p>
-                            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="reveal-on-scroll order-2 lg:order-1">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-blue-50 rounded-xl">
+                            <i class="fas fa-leaf text-2xl text-brand-main mb-2"></i>
+                            <h4 class="font-bold text-brand-dark text-sm">Eco-Friendly</h4>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-brand-main text-xl shrink-0">
-                                <i class="fas fa-certificate"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark">Quality Assured</h4>
-                                <p class="text-sm text-gray-500 mt-1">Built to last with warranty.</p>
-                            </div>
+                        <div class="p-4 bg-blue-50 rounded-xl">
+                            <i class="fas fa-award text-2xl text-brand-main mb-2"></i>
+                            <h4 class="font-bold text-brand-dark text-sm">Quality Certified</h4>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-brand-main text-xl shrink-0">
-                                <i class="fas fa-chair"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark">Ergonomic</h4>
-                                <p class="text-sm text-gray-500 mt-1">Boost productivity & health.</p>
-                            </div>
+                        <div class="p-4 bg-blue-50 rounded-xl">
+                            <i class="fas fa-tools text-2xl text-brand-main mb-2"></i>
+                            <h4 class="font-bold text-brand-dark text-sm">Pro Install</h4>
                         </div>
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-brand-main text-xl shrink-0">
-                                <i class="fas fa-tags"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark">Competitive</h4>
-                                <p class="text-sm text-gray-500 mt-1">Best value for your budget.</p>
-                            </div>
+                        <div class="p-4 bg-blue-50 rounded-xl">
+                            <i class="fas fa-wallet text-2xl text-brand-main mb-2"></i>
+                            <h4 class="font-bold text-brand-dark text-sm">Best Price</h4>
                         </div>
                     </div>
                 </div>
                 
-                <div class="relative reveal-on-scroll stagger-1">
-                    <div class="absolute top-0 right-0 w-full h-full bg-brand-main rounded-3xl transform translate-x-4 translate-y-4 z-0"></div>
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Office Interior" class="relative z-10 rounded-3xl shadow-2xl w-full">
-                    
-                    <!-- Floating Review Card -->
-                    <div class="absolute -bottom-8 -left-8 bg-white p-6 rounded-xl shadow-xl z-20 max-w-xs animate-float">
-                        <div class="flex text-yellow-400 mb-2">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <p class="text-gray-600 text-sm italic mb-3">"OFC Furniture transformed our office completely. The quality is outstanding!"</p>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-gray-200 rounded-full overflow-hidden">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client">
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-brand-dark">John Tan</p>
-                                <p class="text-[10px] text-gray-400">CEO, TechStart SG</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="reveal-on-scroll order-1 lg:order-2">
+                    <h4 class="text-brand-main font-bold uppercase tracking-widest mb-2">Why OFC?</h4>
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark mb-4">We Build Environments That Inspire.</h2>
+                    <p class="text-gray-600 mb-6">
+                        More than just furniture, we provide holistic solutions that improve workflow and employee wellbeing.
+                    </p>
+                    <a href="#contact" class="text-brand-main font-bold hover:underline">Read our story <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA / Footer Pre-roll -->
-    <section id="contact" class="py-24 bg-gradient-to-br from-brand-main to-blue-600 text-white relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+    <!-- Call to Action -->
+    <section id="contact" class="py-20 bg-gradient-to-br from-brand-main to-blue-600 text-white relative overflow-hidden">
+        <!-- Decorative Circles -->
+        <div class="absolute -top-20 -right-20 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl"></div>
         
         <div class="container mx-auto px-6 text-center relative z-10">
-            <h2 class="text-4xl md:text-6xl font-heading font-bold mb-8 reveal-on-scroll">Let's Build Your Dream Office</h2>
-            <p class="text-xl text-blue-100 mb-10 max-w-2xl mx-auto reveal-on-scroll stagger-1">Contact us today to discuss your specific needs and get a customized proposal.</p>
+            <h2 class="text-3xl md:text-5xl font-heading font-bold mb-6 reveal-on-scroll">Ready to Upgrade?</h2>
+            <p class="text-lg text-blue-100 mb-10 max-w-2xl mx-auto reveal-on-scroll stagger-1">
+                Get a customized floor plan and quote within 24 hours.
+            </p>
             
-            <div class="flex flex-col sm:flex-row gap-6 justify-center reveal-on-scroll stagger-2">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal-on-scroll stagger-2">
                 <a href="https://wa.me/6598838858" class="bg-white text-brand-main px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all shadow-lg flex items-center justify-center gap-3 transform hover:scale-105">
                     <i class="fab fa-whatsapp text-2xl"></i> WhatsApp Us
                 </a>
                 <a href="tel:+6598838858" class="bg-brand-dark text-white px-8 py-4 rounded-full font-bold text-lg border border-brand-dark hover:bg-gray-900 transition-all shadow-lg flex items-center justify-center gap-3 transform hover:scale-105">
-                    <i class="fas fa-phone text-lg"></i> +65 9883 8858
+                    <i class="fas fa-phone text-lg"></i> Call +65 9883 8858
                 </a>
             </div>
         </div>
@@ -456,70 +520,50 @@
     <!-- Footer -->
     <footer class="bg-white pt-16 pb-8 border-t border-gray-100">
         <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
-                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/OFC-logo_re.jpg" alt="OFC" class="h-12 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1">
+                    <img src="https://www.ofcfurniture.com.sg/wordpress/wp-content/uploads/2022/11/OFC-logo_re.jpg" alt="OFC" class="h-10 mb-6">
                     <p class="text-gray-500 text-sm leading-relaxed">
-                        Premier office furniture supplier in Singapore. We create workspaces that inspire.
+                        Your partner for productive workspaces.
                     </p>
-                    <div class="flex gap-4 mt-6">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-main hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-main hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-brand-main hover:text-white transition-colors"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
                 </div>
                 
                 <div>
-                    <h4 class="font-bold text-brand-dark mb-6">Solutions</h4>
-                    <ul class="space-y-3 text-sm text-gray-600">
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Workstations</a></li>
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Panel Systems</a></li>
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Meeting Tables</a></li>
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Office Seating</a></li>
+                    <h4 class="font-bold text-brand-dark mb-4">Products</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-main">Workstations</a></li>
+                        <li><a href="#" class="hover:text-brand-main">Meeting Tables</a></li>
+                        <li><a href="#" class="hover:text-brand-main">Seating</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-brand-dark mb-6">Company</h4>
-                    <ul class="space-y-3 text-sm text-gray-600">
-                        <li><a href="#" class="hover:text-brand-main transition-colors">About Us</a></li>
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Projects</a></li>
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-brand-main transition-colors">Contact</a></li>
+                    <h4 class="font-bold text-brand-dark mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-brand-main">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-main">Projects</a></li>
+                        <li><a href="#" class="hover:text-brand-main">Contact</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-brand-dark mb-6">Contact</h4>
-                    <ul class="space-y-3 text-sm text-gray-600">
-                        <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt mt-1 text-brand-main"></i>
-                            <span>Singapore</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-envelope text-brand-main"></i>
-                            <a href="mailto:enquiry@ofcfurniture.com.sg" class="hover:text-brand-main">enquiry@ofcfurniture.com.sg</a>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-phone text-brand-main"></i>
-                            <a href="tel:+6598838858" class="hover:text-brand-main">+65 9883 8858</a>
-                        </li>
+                    <h4 class="font-bold text-brand-dark mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li>enquiry@ofcfurniture.com.sg</li>
+                        <li>+65 9883 8858</li>
+                        <li>Singapore</li>
                     </ul>
                 </div>
             </div>
             
-            <div class="border-t border-gray-100 pt-8 text-center text-gray-400 text-sm flex flex-col md:flex-row justify-between items-center">
+            <div class="border-t border-gray-100 pt-8 text-center text-gray-400 text-xs">
                 <p>&copy; 2025 OFC Furniture Pte Ltd. All Rights Reserved.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-brand-dark">Privacy Policy</a>
-                    <a href="#" class="hover:text-brand-dark">Terms of Service</a>
-                </div>
             </div>
         </div>
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/6598838858" class="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center text-3xl hover:scale-110 transition-transform hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] animate-bounce">
+    <a href="https://wa.me/6598838858" class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-3xl hover:scale-110 transition-transform animate-bounce">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -528,20 +572,30 @@
         // Mobile Menu Toggle
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
         
-        mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        function toggleMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
             const icon = mobileBtn.querySelector('i');
-            if (mobileMenu.classList.contains('hidden')) {
+            if (mobileMenu.classList.contains('translate-x-full')) {
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
             } else {
                 icon.classList.remove('fa-bars');
                 icon.classList.add('fa-times');
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
             }
+        }
+
+        mobileBtn.addEventListener('click', toggleMenu);
+        
+        // Close menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
         });
 
-        // Navbar Glass Effect on Scroll
+        // Navbar Scroll Effect
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -553,26 +607,42 @@
             }
         });
 
-        // Intersection Observer for Scroll Animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        // Intersection Observer for Animations
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    // Optional: Unobserve if you want it to animate only once
-                    // observer.unobserve(entry.target); 
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        // Project Scroll Logic
+        const scrollContainer = document.getElementById('project-scroll');
+        function scrollProjects(direction) {
+            const scrollAmount = 300;
+            if (direction === 'left') {
+                scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+
+        // Accordion Logic
+        function toggleAccordion(button) {
+            const item = button.parentElement;
+            const content = button.nextElementSibling;
+            
+            // Close others
+            document.querySelectorAll('.accordion-item').forEach(acc => {
+                if (acc !== item) {
+                    acc.classList.remove('active');
+                }
+            });
+
+            item.classList.toggle('active');
+        }
     </script>
 </body>
 </html>
